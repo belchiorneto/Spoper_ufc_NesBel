@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package spoper_ufc_nesbel;
+package components;
 
+import db.DbUtils;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -23,26 +24,47 @@ public class Albun {
     public Albun(){
         
     }
+    public void setDescr(String descricao){
+        descr = descricao;
+    }
+    public String getDescr(){
+        return descr;
+    }
     public void setAlbunid(int novoAlbun_id){
         albun_id = novoAlbun_id;
     }
-    public void setAlbun_id(int novoAlbun_id){
-        albun_id = novoAlbun_id;
+    public int getAlbunid(){
+        return albun_id;
     }
     public void setPr_compra(float novoPr_compra){
         pr_compra = novoPr_compra;
     }
+    public Float getPrCompra(){
+        return pr_compra;
+    }
     public void setDt_compra(String novaDt_compra){
         dt_compra = novaDt_compra;
+    }
+    public String getDtCompra(){
+        return dt_compra;
     }
     public void setDt_gravacao(String novaDt_gravacao){
         dt_gravacao = novaDt_gravacao;
     }
+    public String getDtGravacao(){
+        return dt_gravacao;
+    }
     public void setTipo_compra_id(int novoTipo_compra_id){
         tipo_compra_id = novoTipo_compra_id;
     }
+    public String getTipoCompra(){
+        return tipo_compra;
+    }
     public void setGravadora_id(int novaGravadora_id){
         gravadora_id = novaGravadora_id;
+    }
+    public int getGravadoraId(){
+        return gravadora_id;
     }
     
     public Albun[] listaAlbuns(){

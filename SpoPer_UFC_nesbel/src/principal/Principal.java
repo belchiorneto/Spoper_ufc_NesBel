@@ -3,9 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package spoper_ufc_nesbel;
+package principal;
 
 
+import components.Cd;
+import components.PlayList;
+import components.Faixa;
+import components.Albun;
+import db.DbConn;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -38,7 +43,7 @@ import javax.swing.JTextField;
  *
  * @author iranilda
  */
-public class SpoPer_UFC_nesbel extends Application {
+public class Principal extends Application {
     Albun[] albuns;
     PlayList playlist = new PlayList(1,"");
     StackPane root;
@@ -73,19 +78,19 @@ public class SpoPer_UFC_nesbel extends Application {
         linhas_grid++ ;
         for(Albun albun : albuns){
             if(albun != null){    
-                Text id = new Text(10, 20, String.valueOf(albun.albun_id));
+                Text id = new Text(10, 20, String.valueOf(albun.getAlbunid()));
                 id.setFill(Color.BLUE);
                 grid.add(id, 0, linhas_grid);
-                Text descr = new Text(10, 20, albun.descr);
+                Text descr = new Text(10, 20, albun.getDescr());
                 descr.setFill(Color.BLUE);
                 grid.add(descr, 1, linhas_grid);
-                Text dt_compra = new Text(10, 20, String.valueOf(albun.dt_compra));
+                Text dt_compra = new Text(10, 20, String.valueOf(albun.getDtCompra()));
                 dt_compra.setFill(Color.BLUE);
                 grid.add(dt_compra, 2, linhas_grid);
-                Text dt_gravacao = new Text(10, 20, String.valueOf(albun.dt_gravacao));
+                Text dt_gravacao = new Text(10, 20, String.valueOf(albun.getDtGravacao()));
                 dt_gravacao.setFill(Color.BLUE);
                 grid.add(dt_gravacao, 3, linhas_grid);
-                Text tipo_compra = new Text(10, 20, String.valueOf(albun.tipo_compra));
+                Text tipo_compra = new Text(10, 20, String.valueOf(albun.getTipoCompra()));
                 tipo_compra.setFill(Color.BLUE);
                 grid.add(tipo_compra, 4, linhas_grid);
                 linhas_grid++ ;
@@ -139,7 +144,7 @@ public class SpoPer_UFC_nesbel extends Application {
                             public void changed(ObservableValue<? extends Boolean> ov,
                               Boolean old_val, Boolean new_val) {
                               if(cb.isSelected()){
-                                playlist.faixas.put(faixa.faixa_id, faixa);
+                                playlist.getFaixas().put(faixa.getFaixaId(), faixa);
                                 if (! root.getChildren().contains(bt_salvaPlaylist)) {
                                      // botões de ação
                                     bt_salvaPlaylist = new Button();
@@ -152,20 +157,30 @@ public class SpoPer_UFC_nesbel extends Application {
                                         }
                                     });
                                     grid.add(bt_salvaPlaylist, 1, linhas_grid);
+                                    Button close = new Button();
+                                    close.setText("FECHAR");
+
+                                    close.setOnAction(new EventHandler<ActionEvent>() {
+                                        @Override
+                                        public void handle(ActionEvent event) {
+                                           principal.close();
+                                        }
+                                    });
+                                    grid.add(bt_salvaPlaylist, 1, linhas_grid);
                                 }
                               }else{
-                                playlist.faixas.remove(faixa.faixa_id);
+                                playlist.getFaixas().remove(faixa.getFaixaId());
                               }
                            }
                          });
                        
-                        Text id = new Text(10, 20, "Faixa " + String.valueOf(faixa.faixa_id));
+                        Text id = new Text(10, 20, "Faixa " + String.valueOf(faixa.getFaixaId()));
                         id.setFill(Color.BLUE);
                         grid.add(id, 0, linhas_grid);
-                        Text descr = new Text(10, 20, String.valueOf(faixa.descr));
+                        Text descr = new Text(10, 20, String.valueOf(faixa.getDescr()));
                         descr.setFill(Color.BLUE);
                         grid.add(descr, 1, linhas_grid);
-                        Text duracao = new Text(10, 20, String.valueOf(faixa.duracao));
+                        Text duracao = new Text(10, 20, String.valueOf(faixa.getDuracao()));
                         duracao.setFill(Color.BLUE);
                         grid.add(duracao, 2, linhas_grid);
                         grid.add(cb, 3, linhas_grid);
@@ -219,9 +234,8 @@ public class SpoPer_UFC_nesbel extends Application {
      
         gridplaylist.add(gridhead, 1, linhsGrid);
         linhsGrid++;
-        for(Faixa faixa : playlist.faixas.values()){
-            System.out.println("dados da faixas: " + faixa.duracao +"/"+ faixa.faixa_id +"/"+faixa.descr);
-            Text descr_faixa = new Text(10, 20, faixa.descr);
+        for(Faixa faixa : playlist.getFaixas().values()){
+            Text descr_faixa = new Text(10, 20, faixa.getDescr());
             descr_faixa.setFill(Color.BLUE);
             gridplaylist.add(descr_faixa, 1, linhsGrid);
             linhsGrid++;
@@ -232,9 +246,10 @@ public class SpoPer_UFC_nesbel extends Application {
         salvarplaylist.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                playlist.nome = tf_nomeplaylist.getText();
-                playlist.playlist_id = Integer.parseInt(tf_numeroplaylist.getText());
+                playlist.setNome(tf_nomeplaylist.getText());
+                playlist.setPlaylistId(Integer.parseInt(tf_numeroplaylist.getText()));
                 playlist.salvaPlaylist();
+                newWindow.close();
             }
         });
         gridplaylist.add(salvarplaylist, 1, linhsGrid);

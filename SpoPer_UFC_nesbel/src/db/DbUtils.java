@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package spoper_ufc_nesbel;
+package db;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import static spoper_ufc_nesbel.DbConn.stmt;
+import static db.DbConn.stmt;
 
 /**
  *

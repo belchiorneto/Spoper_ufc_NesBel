@@ -3,17 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package spoper_ufc_nesbel;
+package components;
 
 /**
  *
  * @author iranilda
  */
-public class Faixa {
-    int faixa_id;
-    String duracao;
-    String descr;
-    String tipo_gravacao;
-    Interprete[] interpretes = new Interprete[5];
-    Compositor compositor;
+public class Interprete {
+    int interprete_id;
+    String nome;
+    String tipo_interprete;
+    Composicao composicoes;
 }

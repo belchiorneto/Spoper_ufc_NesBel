@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package spoper_ufc_nesbel;
+package components;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;

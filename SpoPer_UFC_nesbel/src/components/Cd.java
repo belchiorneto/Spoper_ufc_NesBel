@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package spoper_ufc_nesbel;
+package components;
 
+import db.DbUtils;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -30,14 +31,16 @@ public class Cd {
         ResultSet rscds = DbUtils.Lista(SQL);
         try{
             int count = 0;
-            while (rscds.next()) { 
-                Cd cd = new Cd();
-                cd.cd_id = Integer.parseInt(rscds.getString("cd_id"));
-                faixas = GetFaixas(Integer.parseInt(rscds.getString("cd_id")));
-                cd.faixas = faixas;
-                cds[count] = cd;
-                count++;
-                System.out.println("Quantidade de cds: " + count);
+            if(!rscds.isClosed()){
+                while (rscds.next()) { 
+                    Cd cd = new Cd();
+                    cd.cd_id = Integer.parseInt(rscds.getString("cd_id"));
+                    faixas = GetFaixas(Integer.parseInt(rscds.getString("cd_id")));
+                    cd.faixas = faixas;
+                    cds[count] = cd;
+                    count++;
+                    System.out.println("Quantidade de cds: " + count);
+                }
             }
         }catch(SQLException e){
             e.printStackTrace();
@@ -67,12 +70,12 @@ public class Cd {
             int count = 0;
             while (rs.next()) { 
                 Faixa faixa = new Faixa();
-                faixa.faixa_id = Integer.parseInt(rs.getString("faixa_id"));
-                faixa.duracao = rs.getString("duracao");
-                faixa.descr = rs.getString("descr");
-                Compositor com = new Compositor();
-                com.nome = rs.getString("nome");
-                faixa.compositor = com;
+                faixa.setFaixaId(Integer.parseInt(rs.getString("faixa_id")));
+                faixa.setDuracao(rs.getString("duracao"));
+                faixa.setDescr(rs.getString("descr"));
+                Compositor compositor = new Compositor();
+                compositor.setNome(rs.getString("nome"));
+                faixa.setCompositor(compositor);
                 faixas[count] = faixa;
                 count++;
             }
@@ -81,4 +84,5 @@ public class Cd {
         }
         return faixas;
     }
+    
 }
