@@ -23,7 +23,9 @@ public class DbConn {
    public static String bd = "fbd_trabalho";
    public static String usuario = "Ufc";
    public static String senha = "Ufc123";
-   public static String connectionUrl = "jdbc:sqlserver://"+server+":"+porta+";databaseName="+bd+";user="+usuario+";password="+senha;
+   //"jdbc:sqlserver://"+server+":"+porta+";databaseName="+bd+";user="+usuario+";password="+senha;
+   //jdbc:sqlserver://"+server+":"+porta+";databasename="+bd+";integratedsecurity=true
+   public static String connectionUrl = "jdbc:sqlserver://"+server+":"+porta+";databasename="+bd+";integratedsecurity=true";
    public static void OpenConnection(){
        try{
             con = DriverManager.getConnection(connectionUrl);           
@@ -34,6 +36,7 @@ public class DbConn {
             e.printStackTrace();
         }
    }
+   
    public static Statement getStatment(){
        return stmt;
    }

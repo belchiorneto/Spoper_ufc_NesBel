@@ -5,6 +5,9 @@
  */
 package spoper_ufc_nesbel;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import static spoper_ufc_nesbel.DbConn.stmt;
@@ -33,4 +36,22 @@ public class DbUtils {
        }
        return rs;
    }
+    
+    public static boolean executeDBScripts(String aSQLScriptFilePath) throws IOException,SQLException {
+        boolean isScriptExecuted = false;
+        try {
+            BufferedReader in = new BufferedReader(new FileReader(aSQLScriptFilePath));
+            String str;
+            StringBuffer sb = new StringBuffer();
+            while ((str = in.readLine()) != null) {
+            sb.append(str + "\n ");
+        }
+        in.close();
+        stmt.executeUpdate(sb.toString());
+        isScriptExecuted = true;
+        } catch (Exception e) {
+            System.err.println("Failed to Execute" + aSQLScriptFilePath +". The error is"+ e.getMessage());
+        } 
+        return isScriptExecuted;
+        }
 }

@@ -5,9 +5,11 @@
  */
 package spoper_ufc_nesbel;
 
-import java.sql.ResultSet;
+
+import java.io.IOException;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -45,7 +47,7 @@ public class SpoPer_UFC_nesbel extends Application {
     int linhas_grid = 1;
     Button bt_salvaPlaylist;
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage){
         principal = primaryStage;
         // grid container
         grid = new GridPane();
@@ -54,6 +56,7 @@ public class SpoPer_UFC_nesbel extends Application {
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
         DbConn.OpenConnection();
+        
         albuns = new Albun[100];
         Albun a = new Albun();
         albuns =  a.listaAlbuns();
