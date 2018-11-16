@@ -7,7 +7,7 @@ package components;
 
 /**
  *
- * @author iranilda
+ * @author Belchior
  */
 public class Composicao {
     int composicao_id;

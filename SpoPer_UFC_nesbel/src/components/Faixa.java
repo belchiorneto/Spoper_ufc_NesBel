@@ -7,7 +7,7 @@ package components;
 
 /**
  *
- * @author iranilda
+ * @author Belchior
  */
 public class Faixa {
     private int faixa_id;

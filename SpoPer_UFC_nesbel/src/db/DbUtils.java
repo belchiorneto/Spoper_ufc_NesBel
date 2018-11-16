@@ -14,7 +14,7 @@ import static db.DbConn.stmt;
 
 /**
  *
- * @author iranilda
+ * @author Belchior
  */
 public class DbUtils {
     public static void Insert(String campos, String data, String table){

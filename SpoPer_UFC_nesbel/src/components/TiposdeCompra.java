@@ -7,7 +7,7 @@ package components;
 
 /**
  *
- * @author iranilda
+ * @author Belchior
  */
 public class TiposdeCompra {
     int tipo_id;

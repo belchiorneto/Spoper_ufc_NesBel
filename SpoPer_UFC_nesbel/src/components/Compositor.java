@@ -9,7 +9,7 @@ import java.sql.Array;
 
 /**
  *
- * @author iranilda
+ * @author Belchior
  */
 public class Compositor {
     int compositor_id;

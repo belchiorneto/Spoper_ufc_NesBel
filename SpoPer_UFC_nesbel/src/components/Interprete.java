@@ -7,7 +7,7 @@ package components;
 
 /**
  *
- * @author iranilda
+ * @author Belchior
  */
 public class Interprete {
     int interprete_id;

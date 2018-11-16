@@ -1,11 +1,11 @@
 /*==============================================================================================
-Trabalho para disciplina de Fundamento de Banco de Dados
+BDSpotPer para disciplina de Fundamento de Banco de Dados
 Professor: ANGELO RONCALLI ALENCAR BRAYNER
 Equipe: 
 	Belchior Dameao de Araújo Neto - 384343
 	Everson Magalhaes Cavalcante
 
-Resumo do trabalho:
+Resumo do BDSpotPer:
 Projetar banco de dados para um aplicativo de gerenciamento de músicas semelhante ao Spotfy (SpotPer)
 Este documento faz parte do projeto e contém as informações e scripts necessários para criação do banco de dados
 em ambiente "SQL Server" e "PostgreSQL"
@@ -22,9 +22,44 @@ campos:
 - gravadora_id (armazena o identificado da gravadora presente na tabela "gravadoras")
 */
 
-CREATE DATABASE	fbd_trabalho
+CREATE DATABASE	BDSpotPer
+ON
+	PRIMARY
+	(
+		NAME = 'BDSpotPer',
+		FILENAME = 'C:\FBD\BDSpotPer.mdf',
+		SIZE = 10120KB,
+		FILEGROWTH = 10%
+	),
+	FILEGROUP BDSpotPer_fg01
+	(
+		NAME = 'BDSpotPer_001',
+		FILENAME = 'C:\FBD\BDSpotPer_001.ndf',
+		SIZE = 2048KB,
+		FILEGROWTH = 20%
+	),
+	(
+		NAME ='BDSpotPer_002',
+		FILENAME = 'C:\FBD\BDSpotPer_002.ndf',
+		SIZE = 2024KB,
+		FILEGROWTH = 10%
+	),
+	FILEGROUP BDSpotPer_fg02
+	(
+		NAME = 'BDSpotPer_003',
+		FILENAME = 'C:\FBD\BDSpotPer_003.ndf',
+		SIZE = 2048KB,
+		FILEGROWTH = 20%
+	)
+	LOG ON
+	(
+		NAME = 'BDSpotPer_log',
+		FILENAME = 'C:\FBD\BDSpotPer_log.ldf',
+		SIZE = 1024KB,
+		FILEGROWTH = 10%
+	)
 GO
-USE fbd_trabalho
+USE BDSpotPer
 GO
 
 CREATE TABLE albuns
@@ -38,7 +73,7 @@ CREATE TABLE albuns
 		gravadora_id TINYINT NOT NULL,
 		CONSTRAINT pk_albun PRIMARY KEY (albun_id) 
 		-- adicionaremos as chaves estrangeiras depois de criada a tabela "tipo_compra" e "gravadora"
-	);
+	) ON BDSpotPer_fg01
 
 /*
 Tabela "tipos_compra", conterá os tipos de compra efetuados na aquisição dos albuns
@@ -51,7 +86,7 @@ CREATE TABLE tipos_compra
 		tipo_id TINYINT NOT NULL,
 		descr VARCHAR(20),
 		CONSTRAINT pk_tipo PRIMARY KEY (tipo_id)
-	);
+	) ON BDSpotPer_fg01
 
 /*
 Tabela "gravadoras", conterá informações referentes às gravadoras
@@ -69,7 +104,7 @@ CREATE TABLE gravadoras
 		endereco VARCHAR(255),
 		website VARCHAR(255),
 		CONSTRAINT pk_gravadora PRIMARY KEY (gravadora_id)
-	);
+	) ON BDSpotPer_fg01
 
 /*
 agora que as tabelas foram "tipos_compra" e "gravadoras" existem, podemos adicionar as FKs na tabela "albuns" 
@@ -98,7 +133,7 @@ CREATE TABLE cds
 		CONSTRAINT fk_albun_id 
 		FOREIGN KEY (albun_id)
 		REFERENCES albuns(albun_id)
-	)
+	) ON BDSpotPer_fg01
 
 /*
 Tabela "faixas", conterá as informações referentes a cada faixa de música
@@ -123,7 +158,7 @@ CREATE TABLE faixas
 		CONSTRAINT fk_cd_id
 		FOREIGN KEY( cd_id ) REFERENCES cds ( cd_id )
 		-- adcicionaremos a fk tipo_gravacao_id depois de criada a tabela "tipos_gravacoes"
-	)
+	) ON BDSpotPer_fg02
 
 
 /*
@@ -139,7 +174,7 @@ CREATE TABLE tipos_gravacao
 		descr VARCHAR(60),
 		CONSTRAINT pk_tipo_gravacao_id
 		PRIMARY KEY (tipo_gravacao_id)
-	)
+	) ON BDSpotPer_fg01
 
 ALTER TABLE faixas
 	ADD CONSTRAINT fk_tipo_gravacao_id
@@ -149,7 +184,7 @@ ALTER TABLE faixas
 Tabela "telefones", conterá os números de telefones e descrição do mesmo
 campos:
 - telefone_id (identificador único de cada telefone)
-- descr(uma descrição do tipo de linha (residencial, trabalho, celular etc))
+- descr(uma descrição do tipo de linha (residencial, BDSpotPer, celular etc))
 - numero (o número do telefone)
 - gravadora_id (o identificador da gravadora a qual o telefone é vinculado)
 */
@@ -166,7 +201,7 @@ CREATE TABLE telefones
 		CONSTRAINT fk_gravadora_telefone_id
 		FOREIGN KEY (gravadora_id) 
 		REFERENCES gravadoras(gravadora_id)
-	)
+	) ON BDSpotPer_fg01
 
 
 /*
@@ -183,7 +218,7 @@ CREATE TABLE playlists
 		dt_criacao DATETIME,
 		CONSTRAINT pk_playlist_id
 		PRIMARY KEY (playlist_id),
-	)
+	) ON BDSpotPer_fg02
 /*
 Tabela "playlists_faixas", necessária para implementar a relação entre playlists e faixas
 campos:
@@ -202,7 +237,7 @@ CREATE TABLE playlists_faixas
 		CONSTRAINT fk_faixa_playlist_id
 		FOREIGN KEY (faixa_id) 
 		REFERENCES faixas(faixa_id)
-	)
+	) ON BDSpotPer_fg02
 /*
 Tabela "periodosmusicais", armazena as informações de periodos musicais
 campos:
@@ -219,7 +254,7 @@ CREATE TABLE periodosmusicais
 		atividade_fim char(4),
 		CONSTRAINT pk_periodomusical_id
 		PRIMARY KEY (periodomusical_id),
-	)
+	) ON BDSpotPer_fg01
 /*
 Tabela "paises", armazena as informações de cada pais
 campos:
@@ -232,7 +267,7 @@ CREATE TABLE paises
 		nome VARCHAR(65),
 		CONSTRAINT pk_pais_id
 		PRIMARY KEY (pais_id),
-	)
+	) ON BDSpotPer_fg01
 /*
 Tabela "cidades", armazena as informações de cada cidade
 campos:
@@ -251,7 +286,7 @@ CREATE TABLE cidades
 		CONSTRAINT fk_pais_id
 		FOREIGN KEY (pais_id) 
 		REFERENCES paises(pais_id)
-	)
+	) ON BDSpotPer_fg01
 
 /*
 Tabela "compositores", armazena as informações de cada compositor
@@ -279,7 +314,7 @@ CREATE TABLE compositores
 		CONSTRAINT fk_periodomusical_id
 		FOREIGN KEY (periodomusical_id) 
 		REFERENCES periodosmusicais(periodomusical_id)
-	)
+	) ON BDSpotPer_fg01
 /*
 Tabela "tipos_composicoes", armazenará as informações dos tipos de composição
 campos:
@@ -293,7 +328,7 @@ CREATE TABLE tipos_composicoes
 		descr VARCHAR(65)
 		CONSTRAINT pk_tipo_composicao_id
 		PRIMARY KEY (tipo_composicao_id)
-	)
+	) ON BDSpotPer_fg01
 /*
 Tabela "composicoes", armazenará as informações de cada composição
 campos:
@@ -316,7 +351,7 @@ CREATE TABLE composicoes
 		CONSTRAINT fk_tipo_composicao_id
 		FOREIGN KEY (tipo_composicao_id) 
 		REFERENCES tipos_composicoes(tipo_composicao_id)
-	)
+	) ON BDSpotPer_fg01
 
 /*
 Tabela "tipos_interpretes", armazena os tipos de interpretes
@@ -330,7 +365,7 @@ CREATE TABLE tipos_interpretes
 		descr VARCHAR(65),
 		CONSTRAINT pk_tipo_interprete_id
 		PRIMARY KEY (tipo_interprete_id)
-	)
+	) ON BDSpotPer_fg01
 /*
 Tabela "interpretes", armazenará as informações de cada interprete
 campos:
@@ -348,7 +383,7 @@ CREATE TABLE interpretes
 		CONSTRAINT fk_tipo_interprete_id
 		FOREIGN KEY (tipo_interprete_id) 
 		REFERENCES tipos_interpretes(tipo_interprete_id)
-	)
+	) ON BDSpotPer_fg01
 /*
 Tabela "faixas_interpretes_comp", necessária para fazer a ligação entre as tabelas faixas, interpretes e composições
 campos:
@@ -370,7 +405,7 @@ CREATE TABLE faixas_interpretes_comp
 		CONSTRAINT fk_composicao_id
 		FOREIGN KEY (composicao_id) 
 		REFERENCES composicoes(composicao_id)
-	)
+	) ON BDSpotPer_fg01
 /*
 Tabela "interpretes_composicoes", necessária para fazer a ligação entre as tabelas interpretes e composições
 campos:
@@ -387,12 +422,12 @@ CREATE TABLE interpretes_composicoes
 		CONSTRAINT fk_composicoes_interpretes_id
 		FOREIGN KEY (composicao_id) 
 		REFERENCES composicoes(composicao_id)
-	)
+	) ON BDSpotPer_fg01
 
 GO
 
 /*
-	incluiremos alguns dados no banco de dados para poder executar as ações solicitadas no trabalho
+	incluiremos alguns dados no banco de dados para poder executar as ações solicitadas no BDSpotPer
 	==============================================================================================
 */
 
@@ -453,7 +488,7 @@ Fim das inclusões de dados no banco de dados
 ========================================================================================================
 */
 /*
-	ITEM 6 DA PARTE 2 DO TRABALHO, IMPLEMENTAR FUNÇÃO QUE TENHA COMO ENTRADA NOME OU PARTE DO NOME 
+	ITEM 6 DA PARTE 2 DO BDSpotPer, IMPLEMENTAR FUNÇÃO QUE TENHA COMO ENTRADA NOME OU PARTE DO NOME 
 	DO COMPOSITOR E COMO SAIDA ALBUNS E OBRAS DESTE COMPOSITOR
 	==============================================================================================
 */

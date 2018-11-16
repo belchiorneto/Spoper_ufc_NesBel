@@ -8,10 +8,12 @@ package components;
 import db.DbUtils;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
- * @author iranilda
+ * @author Belchior
  */
 public class Cd {
     public int cd_id;
@@ -44,6 +46,14 @@ public class Cd {
             }
         }catch(SQLException e){
             e.printStackTrace();
+        }finally {
+            if (rscds != null) { 
+                try {
+                    rscds.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Cd.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return cds;
     }
@@ -81,6 +91,15 @@ public class Cd {
             }
         }catch(SQLException e){
             e.printStackTrace();
+        }finally {
+        // you should release your resources here
+            if (rs != null) { 
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Cd.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return faixas;
     }

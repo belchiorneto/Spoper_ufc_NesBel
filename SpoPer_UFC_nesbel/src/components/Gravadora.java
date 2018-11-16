@@ -11,7 +11,7 @@ import javafx.scene.layout.GridPane;
 
 /**
  *
- * @author iranilda
+ * @author Belchior
  */
 public class Gravadora {
     int id;

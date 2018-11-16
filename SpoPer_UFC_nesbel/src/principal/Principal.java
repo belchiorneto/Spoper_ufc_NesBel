@@ -11,10 +11,6 @@ import components.PlayList;
 import components.Faixa;
 import components.Albun;
 import db.DbConn;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -41,7 +37,7 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author iranilda
+ * @author Belchior
  */
 public class Principal extends Application {
     Albun[] albuns;

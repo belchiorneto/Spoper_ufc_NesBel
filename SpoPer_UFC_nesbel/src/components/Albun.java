@@ -8,6 +8,8 @@ package components;
 import db.DbUtils;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -108,6 +110,14 @@ public class Albun {
             }
         }catch(SQLException e){
             e.printStackTrace();
+        }finally {
+            if (rs != null) { 
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Cd.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return albuns;
     }

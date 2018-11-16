@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
  *
- * @author iranilda
+ * @author Belchior
  */
 public class DbConn {
    public static Connection con;
