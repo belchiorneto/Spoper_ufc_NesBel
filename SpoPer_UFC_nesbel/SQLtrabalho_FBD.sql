@@ -8,19 +8,8 @@ Equipe:
 Resumo do BDSpotPer:
 Projetar banco de dados para um aplicativo de gerenciamento de músicas semelhante ao Spotfy (SpotPer)
 Este documento faz parte do projeto e contém as informações e scripts necessários para criação do banco de dados
-em ambiente "SQL Server" e "PostgreSQL"
+em ambiente "SQL Server" ou "PostgreSQL"
 ================================================================================================*/
-
-/*
-Tabela "albuns", conterá informações dos albuns armazenados no banco de dados
-campos:
-- albun_id (identificador único)
-- pr_compra (armazena o preço de compra do album)
-- dt_compra (armazena a data da compra do album)
-- dt_gravacao (armazena a data em que o album foi gravado)
-- tipo_compra_id (armazena o id do tipo de compra presente na tabela "tipos_compra")
-- gravadora_id (armazena o identificado da gravadora presente na tabela "gravadoras")
-*/
 
 CREATE DATABASE	BDSpotPer
 ON
@@ -62,6 +51,16 @@ GO
 USE BDSpotPer
 GO
 
+/*
+Tabela "albuns", conterá informações dos albuns armazenados no banco de dados
+campos:
+- albun_id (identificador único)
+- pr_compra (armazena o preço de compra do album)
+- dt_compra (armazena a data da compra do album)
+- dt_gravacao (armazena a data em que o album foi gravado)
+- tipo_compra_id (armazena o id do tipo de compra presente na tabela "tipos_compra")
+- gravadora_id (armazena o identificado da gravadora presente na tabela "gravadoras")
+*/
 CREATE TABLE albuns
 	(
 		albun_id TINYINT NOT NULL,
@@ -107,7 +106,7 @@ CREATE TABLE gravadoras
 	) ON BDSpotPer_fg01
 
 /*
-agora que as tabelas foram "tipos_compra" e "gravadoras" existem, podemos adicionar as FKs na tabela "albuns" 
+agora que as tabelas "tipos_compra" e "gravadoras" existem, podemos adicionar as FKs na tabela "albuns" 
 */
 ALTER TABLE albuns
 	ADD CONSTRAINT fk_gravadora_id
@@ -515,52 +514,3 @@ RETURN (SELECT
 ===================================================================================================
 */
 
-
-/*
-Script para limpar as chaves
-Fonte: https://dba.stackexchange.com/questions/90033/how-do-i-drop-all-constraints-from-all-tables
-*/
-/*
-DECLARE @sqldropconstraint NVARCHAR(MAX);
-SET @sqldropconstraint = N'';
-
-SELECT @sqldropconstraint = @sqldropconstraint + N'
-  ALTER TABLE ' + QUOTENAME(s.name) + N'.'
-  + QUOTENAME(t.name) + N' DROP CONSTRAINT '
-  + QUOTENAME(c.name) + ';'
-FROM sys.objects AS c
-INNER JOIN sys.tables AS t
-ON c.parent_object_id = t.[object_id]
-INNER JOIN sys.schemas AS s 
-ON t.[schema_id] = s.[schema_id]
-WHERE c.[type] IN ('D','C','F','PK','UQ')
-ORDER BY c.[type];
-
-PRINT @sqldropconstraint;
-*/
-/*
-Script para excluir todas as tabelas
-Fonte: https://stackoverflow.com/questions/8439650/how-to-drop-all-tables-in-a-sql-server-database
-*/
-/*
-DECLARE @Sqldroptable NVARCHAR(500) DECLARE @Cursor CURSOR
-
-SET @Cursor = CURSOR FAST_FORWARD FOR
-SELECT DISTINCT sql = 'ALTER TABLE [' + tc2.TABLE_NAME + '] DROP [' + rc1.CONSTRAINT_NAME + ']'
-FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc1
-LEFT JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc2 ON tc2.CONSTRAINT_NAME =rc1.CONSTRAINT_NAME
-
-OPEN @Cursor FETCH NEXT FROM @Cursor INTO @Sqldroptable
-
-WHILE (@@FETCH_STATUS = 0)
-BEGIN
-Exec sp_executesql @Sqldroptable
-FETCH NEXT FROM @Cursor INTO @Sqldroptable
-END
-
-CLOSE @Cursor DEALLOCATE @Cursor
-GO
-
-EXEC sp_MSforeachtable 'DROP TABLE ?'
-GO
-*/

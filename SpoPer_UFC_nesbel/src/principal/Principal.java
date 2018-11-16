@@ -90,7 +90,7 @@ public class Principal extends Application {
                 tipo_compra.setFill(Color.BLUE);
                 grid.add(tipo_compra, 4, linhas_grid);
                 linhas_grid++ ;
-                imprimeCds(albun.cds);
+                mostraCds(albun.cds);
                 
             }
         }
@@ -116,7 +116,7 @@ public class Principal extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-    void imprimeCds(Cd[] cds){
+    void mostraCds(Cd[] cds){
         
         for(Cd cd: cds){
             if(cd != null) {
@@ -149,7 +149,7 @@ public class Principal extends Application {
                                     bt_salvaPlaylist.setOnAction(new EventHandler<ActionEvent>() {
                                         @Override
                                         public void handle(ActionEvent event) {
-                                           SalvaPlayList();
+                                           salvaPlayList();
                                         }
                                     });
                                     grid.add(bt_salvaPlaylist, 1, linhas_grid);
@@ -187,7 +187,7 @@ public class Principal extends Application {
         
         }
     }
-    void SalvaPlayList(){
+    void salvaPlayList(){
         int linhsGrid = 1;
         StackPane secondaryLayout = new StackPane();
         Scene secondScene = new Scene(secondaryLayout, 600, 500);
