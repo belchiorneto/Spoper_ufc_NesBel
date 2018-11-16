@@ -10,6 +10,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author iranilda
@@ -20,26 +22,18 @@ public class DbConn {
    // variaveis de conexão
    public static String server = "localhost";
    public static String porta = "1433";
-   public static String bd = "fbd_trabalho";
-   public static String usuario = "Ufc";
-   public static String senha = "Ufc123";
-   //"jdbc:sqlserver://"+server+":"+porta+";databaseName="+bd+";user="+usuario+";password="+senha;
-   //jdbc:sqlserver://"+server+":"+porta+";databasename="+bd+";integratedsecurity=true
-   public static String connectionUrl = "jdbc:sqlserver://"+server+":"+porta+";databasename="+bd+";integratedsecurity=true";
+   public static String bd = "BDSpotPer";
+   private static String connectionUrl = "jdbc:sqlserver://"+server+":"+porta+";databasename="+bd+";integratedsecurity=true";
    public static void OpenConnection(){
-       try{
-            con = DriverManager.getConnection(connectionUrl);           
-            stmt = con.createStatement();
-        }
-        // Handle any errors that may have occurred.
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
+       try {
+           con = DriverManager.getConnection(connectionUrl);   
+           stmt = con.createStatement();
+       } catch (SQLException ex) {
+           Logger.getLogger(DbConn.class.getName()).log(Level.SEVERE, null, ex);
+       }
    }
    
    public static Statement getStatment(){
        return stmt;
    }
-   
-   
 }
